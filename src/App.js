@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import ReactLoading from 'react-loading';
 
 function App() {
   const [data, setData] = useState();
@@ -7,6 +8,7 @@ function App() {
   const [result , setResult] = useState('Result')
   const [selectOne, setSelectOne] = useState('temp');
   const [selectTwo, setSelectTwo] = useState('temp');
+  
   const fetchData = async()=>{
     await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies.min.json')
     .then(response => response.json())
@@ -34,7 +36,11 @@ function App() {
   }
 
   const calculate = async ()=>{
-    var temp 
+      result === 'Result' && (
+        <ReactLoading type='bars'  />
+      )
+
+    var temp = ''
     if(selectOne === 'temp' || selectTwo === 'temp')
       alert("Please choose correct Currency")
     else{
@@ -83,7 +89,8 @@ function App() {
             )
           }
         </select>
-        <input type='number' placeholder={result} disabled/>
+        <input type='number' placeholder={result} onChange={()=>{setResult('')
+      console.log(result)}} disabled/>
       </div>
       <button onClick={()=>calculate()}>Calculate</button>
     </div>
